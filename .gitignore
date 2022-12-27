@@ -44,4 +44,3 @@ data/*.csv
 *.csv
 output/*.csv
 *.Rproj
-*.html
