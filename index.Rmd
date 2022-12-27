@@ -1,0 +1,27 @@
+---
+title: "fftpipe Tutorial"
+description: |
+  How to use the fftpipe package for R.
+author:
+  - name: Alicia M. F. Key 
+    url: https://scialicia.com
+    affiliation: Personal Projects
+    affiliation_url: https://scialicia.com
+date: "`r Sys.Date()`"
+output: distill::distill_article
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(fftpipe)
+library(ggplot2)
+library(dplyr)
+```
+
+## A test plot
+
+```{r}
+ggplot(mtcars, aes(x = cyl, y = disp)) +
+  geom_point()
+```
+
