@@ -12,10 +12,7 @@ output: distill::distill_article
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-library(fftpipe)
-library(ggplot2)
-library(dplyr)
+knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## What is fftpipe?
@@ -35,3 +32,42 @@ Install `fftpipe` from GitHub with devtools. If you don't have devtools installe
 ```
 devtools::install_github("akey7/fftpipe")
 ```
+
+## Quick Start
+
+More detail about each of these steps is described below in this document. But this will get you started!
+
+### Load the necessary packages
+
+While you can use `fftpipe` on its own, it is designed to work within the [Tidyverse](https://www.tidyverse.org) ecosystem, so I recommend you load the tidyverse as well. Also, I will set a theme for `ggplot()`.
+
+```{r}
+suppressPackageStartupMessages(library(fftpipe))
+suppressPackageStartupMessages(library(tidyverse))
+theme_set(theme_linedraw(base_size = 15))
+```
+
+### Generate a waveform
+
+For the quick start demo, let's compose a waveform to feed into the FFT with the following properties:
+
+1. Its duration will be 1 second with a sample rate of 200 samples/second.
+2. It will be the sum of 2 cosines, with the second cosine being 3x the frequency and 50% the amplitude of the first cosine.
+3. Its total amplitude will decrease with an exponential decay function, with an [exponential time constant (tau)](https://en.wikipedia.org/wiki/Exponential_decay#Mean_lifetime) of 0.5.
+
+We can compose this waveform using functions from fftpipe as shown in this code block:
+
+```{r}
+wv <- waveform(duration_s = 1.0, sr = 200) %>%
+  cos_sum(freqs = c(2.0, 6.0), amplitudes = c(1.0, 0.5)) %>%
+  exp_decay(decay_tau = 0.5)
+```
+
+### Plot the input waveform
+
+We can streamline plotting the input waveform with the following function call. This plot can be refined in ways I'll describe later in the document.
+
+```{r}
+waveform_plot(wv)
+```
+
