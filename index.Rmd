@@ -18,10 +18,20 @@ library(ggplot2)
 library(dplyr)
 ```
 
-## A test plot
+## What is fftpipe?
 
-```{r}
-ggplot(mtcars, aes(x = cyl, y = disp)) +
-  geom_point()
+`fftpipe` is a package of functions that wrap around the base R [`fft()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/fft) function. The `fftpipe` package enables workflows around the [`fft()`](https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/fft) function that use the pipe (`%>%`) operator. I took inspiration for the interface to `fftpipe` from the [Tidyverse](https://www.tidyverse.org) and [tidymodels](https://www.tidymodels.org) packages.
+
+Specifically, `fftpipe` offers the following functionality:
+
+1. Waveform generation,
+2. FFT and inverse FFT transformation,
+3. Plotting of these waveforms and FFTs.
+
+## Installation
+
+Install `fftpipe` from GitHub with devtools. If you don't have devtools installed already, install it with `install.packages("devtools")`. Once devtools is installed, you can then install `fftpipe` by typing the following command into the R console:
+
 ```
-
+devtools::install_github("akey7/fftpipe")
+```
