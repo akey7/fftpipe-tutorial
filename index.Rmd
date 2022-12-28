@@ -54,13 +54,15 @@ For the quick start demo, let's compose a waveform to feed into the FFT with the
 1. Its duration will be 1 second with a sample rate of 200 samples/second.
 2. It will be the sum of 2 cosines, with the second cosine being 3x the frequency and 50% the amplitude of the first cosine.
 3. Its total amplitude will decrease with an exponential decay function, with an [exponential time constant (tau)](https://en.wikipedia.org/wiki/Exponential_decay#Mean_lifetime) of 0.5.
+4. The final result will be normalized by dividing the vector of values by the length of that vector to prepare the waveform for FFT.
 
 We can compose this waveform using functions from fftpipe as shown in this code block:
 
 ```{r}
 wv <- waveform(duration_s = 1.0, sr = 200) %>%
   cos_sum(freqs = c(2.0, 6.0), amplitudes = c(1.0, 0.5)) %>%
-  exp_decay(decay_tau = 0.5)
+  exp_decay(decay_tau = 0.5) %>%
+  length_norm()
 ```
 
 ### Plot the input waveform
