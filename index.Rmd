@@ -49,7 +49,7 @@ theme_set(theme_linedraw(base_size = 15))
 
 ### Generate a waveform
 
-For the quick start demo, let's compose a waveform to feed into the FFT with the following properties:
+Waveforms can either be built from external data or synthesized from within the `fftpipe` package. For this quick start demo, let's compose a waveform to feed into the FFT with the following properties:
 
 1. Its duration will be 1 second with a sample rate of 200 samples/second.
 2. It will be the sum of 2 cosines, with the second cosine being 3x the frequency and 50% the amplitude of the first cosine.
@@ -59,9 +59,8 @@ For the quick start demo, let's compose a waveform to feed into the FFT with the
 We can compose this waveform using functions from fftpipe as shown in this code block:
 
 ```{r}
-wv <- waveform(duration_s = 1.0, sr = 200) %>%
+wv <- waveform(duration_s = 1.0, sr = 100) %>%
   cos_sum(freqs = c(2.0, 6.0), amplitudes = c(1.0, 0.5)) %>%
-  exp_decay(decay_tau = 0.5) %>%
   length_norm()
 ```
 
@@ -72,4 +71,40 @@ We can streamline plotting the input waveform with the following function call. 
 ```{r}
 waveform_plot(wv)
 ```
+
+### Perform the FFT
+
+We can perform an FFT on the waveform we just made. To do that, run the following line:
+
+```{r}
+wv_fft <- wv %>%
+  compute_fft()
+```
+
+We can then use this FFT `data.frame` to plot the FFT and reconstruct the original waveform in the next two steps.
+
+### Plot the FFT
+
+`fft_plot()` plots the FFT as shown below. By default, the plot only shows the frequency components that are at or below the [Nyquist frequency (half the sample rate)](https://en.wikipedia.org/wiki/Nyquist_frequency). Here, our sample rate is 100 Hz, so the maximum frequency is 50 Hz. This plot can be further customized, which will be shown later in the document.
+
+Note how our original component cosines we summed together appear here as peaks at 2 Hz and 6 Hz, with the first peak being twice the height of the second. Hence, our little FFT captured the frequencies and amplitudes of our original waveform!
+
+```{r}
+wv_fft %>%
+  fft_plot()
+```
+
+### Reconstruct the original waveform from the FFT
+
+Finally, we can reconstruct the original waveform from the FFT. First, we need to make a waveform that defines the sample rate and values for the waveform to be reconstructed. This should match the `waveform()` call above. Then we need to feed both the new waveform and FFT into the `inverse_FFT()`. Then, we can pass the reconstruction through a `length_norm()` call and plot the reconstructed waveform.
+
+```{r}
+waveform(duration_s = 1.0, sr = 100) %>%
+  inverse_fft(wv_fft) %>%
+  length_norm() %>%
+  waveform_plot()
+```
+
+By using `length_norm()` before and after the FFT, the amplitudes of our waveform are the same before and after the FFT.
+
 
