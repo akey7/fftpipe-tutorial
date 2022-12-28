@@ -60,7 +60,7 @@ We can compose this waveform using functions from fftpipe as shown in this code 
 
 ```{r}
 wv <- waveform(duration_s = 1.0, sr = 100) %>%
-  cos_sum(freqs = c(2.0, 6.0), amplitudes = c(1.0, 0.5)) %>%
+  cos_sum(freqs = c(2.0, 6.0), amplitudes = c(1.0, 0.9)) %>%
   length_norm()
 ```
 
@@ -87,7 +87,7 @@ We can then use this FFT `data.frame` to plot the FFT and reconstruct the origin
 
 `fft_plot()` plots the FFT as shown below. By default, the plot only shows the frequency components that are at or below the [Nyquist frequency (half the sample rate)](https://en.wikipedia.org/wiki/Nyquist_frequency). Here, our sample rate is 100 Hz, so the maximum frequency is 50 Hz. This plot can be further customized, which will be shown later in the document.
 
-Note how our original component cosines we summed together appear here as peaks at 2 Hz and 6 Hz, with the first peak being twice the height of the second. Hence, our little FFT captured the frequencies and amplitudes of our original waveform!
+Note how our original component cosines we summed together appear here as peaks at 2 Hz and 6 Hz. The first peak is taller than the second peak, which corresponds to our 6 Hz component having less amplitude than the 2 Hz component. Hence, our FFT captured the frequencies of our original waveform!
 
 ```{r}
 wv_fft %>%
