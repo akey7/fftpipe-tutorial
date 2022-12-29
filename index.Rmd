@@ -107,4 +107,110 @@ waveform(duration_s = 1.0, sr = 100) %>%
 
 By using `length_norm()` before and after the FFT, the amplitudes of our waveform are the same before and after the FFT.
 
+## In Depth
+
+In this section, I will go over the capabilities of the `fftpipe` package in more detail. This section will cover:
+
+1. Plot customization with labels and themeing
+2. Signal denoising
+
+### Plot Customization
+
+TODO
+
+### Signal Denoising
+
+Signal denoising is a simple way to remove noise from a signal through the following steps:
+
+1. FFT the noisy signal
+2. Inspect the power spectral density (PSD) for each Fourier coefficient
+3. Observe that the coeffficients encoding the signal have a higher PSD than the noise coefficients.
+4. Zero the coefficients that do not meet a PSD threshold.
+5. Run and inverse FFT to reconstruct a waveform with reduced noise.
+
+All of these steps can be accomplished with functions in `fftpipe`.
+
+#### Create Clean and Noisy Signals
+
+Let's make the sample rate higher than we have been using so far so that it can capture the high frequency white noise better. First, let's make a clean signal and inspect its waveform and PSD plot.
+
+```{r}
+# sr = 500 Hz, maximum frequency that can be sampled is 250 Hz.
+wv <- waveform(duration_s = 1.0, sr = 500) 
+
+# length_norm() makes the FFT in a later step easier.
+wv_clean <- wv %>%
+  cos_sum(
+    freqs = c(5, 10, 20), 
+    amplitudes = c(1.0, 0.875, 0.75), 
+    phases = c(2*pi/3, 0, 2*pi/4))
+
+wv_clean_fft <- wv_clean %>%
+  length_norm() %>%
+  compute_fft()
+```
+
+Create the plots of the clean signal:
+
+```{r}
+wv_clean %>%
+  waveform_plot(
+    title = "Clean Signal",
+    x = "t (s)", 
+    y = "f(t)"
+  )
+```
+
+```{r}
+wv_clean_fft %>%
+  fft_plot(title = "PSD of Fourier Coefficients, Clean Signal", x = "Hz", y = "PSD")
+```
+
+Now let's add some noise! 
+
+The `white_noise()` function adds noise from a Gaussian distribution to the signal.
+
+```{r}
+set.seed(123)
+
+wv_noisy <- wv_clean %>%
+  white_noise(mean = 0, sd = 1e-3)
+
+wv_noisy_fft <- wv_noisy %>%
+  length_norm() %>%
+  compute_fft()
+```
+
+As before, let's plot the waveform and the PSD of the first half of Fourier coefficients.
+
+```{r}
+wv_noisy %>%
+  waveform_plot(
+    title = "Noisy Signal",
+    x = "t (s)", 
+    y = "f(t)"
+  )
+```
+
+```{r}
+wv_noisy_fft %>%
+  fft_plot(title = "PSD of Fourier Coefficients, Noisy Signal", x = "Hz", y = "PSD")
+```
+
+Note that a bunch of Fourier coefficients have lit up with very small PSD values. When we drop these coefficients to zero, we will recover clean FOurier coefficients. Then, when we do an inverse Fourier transform on the cleaned coefficients, we will recover the signal from the noise.
+
+```{r}
+wv_noisy_but_cleaned <- wv_noisy_fft %>%
+  denoise_fft(psd_thresh = 5e-2) %>%
+  inverse_fft(wv, .) %>%
+  length_norm()
+
+wv_noisy_but_cleaned %>%
+  waveform_plot(
+    title = "Waveform With Noise Removed", 
+    x = "t (s)", 
+    y = "f(t)"
+  )
+```
+
 
