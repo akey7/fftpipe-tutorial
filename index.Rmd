@@ -302,7 +302,7 @@ our_first_fft <- wv_for_fft %>%
   compute_fft()
 
 our_first_fft %>%
-  fft_plot(show = "psd", x = "Hz", y = "PSD", title = "Our First FFT")
+  fft_plot(show = "psd", x = "Hz", y = "PSD")
 ```
 
 (Read below to find out how to remove noise with FFT denoising!)
@@ -327,7 +327,7 @@ wv_recreated %>%
 
 ### Signal Denoising
 
-Signal denoising is a simple way to remove noise from a signal through the following steps:
+Signal denoising is a simple way to remove noise from a signal through the following steps:<sup>1</sup>
 
 1. FFT the noisy signal
 2. Inspect the power spectral density (PSD) for each Fourier coefficient
@@ -419,3 +419,8 @@ wv_noisy_but_cleaned %>%
     y = "f(t)"
   )
 ```
+
+## Additional Resources
+
+1. Brunton, Steve. Denoising Data with FFT [Python] [https://youtu.be/s2K1JfNR7Sc](https://youtu.be/s2K1JfNR7Sc)
+2. Neto, João, Fourier Transform: A R Tutorial [http://www.di.fc.ul.pt/~jpn/r/fourier/fourier.html](http://www.di.fc.ul.pt/~jpn/r/fourier/fourier.html)
