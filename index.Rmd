@@ -327,7 +327,7 @@ wv_recreated %>%
 
 ### Signal Denoising
 
-Signal denoising is a simple way to remove noise from a signal through the following steps:<sup>1</sup>
+Signal denoising is a simple way to remove noise from a signal through the following steps:<sup>1, 2</sup>
 
 1. FFT the noisy signal
 2. Inspect the power spectral density (PSD) for each Fourier coefficient
@@ -414,7 +414,7 @@ wv_noisy_but_cleaned <- wv_noisy_fft %>%
 
 wv_noisy_but_cleaned %>%
   waveform_plot(
-    title = "Waveform With Noise Removed", 
+    title = "Clean Signal", 
     x = "t (s)", 
     y = "f(t)"
   )
@@ -423,4 +423,5 @@ wv_noisy_but_cleaned %>%
 ## Additional Resources
 
 1. Brunton, Steve. Denoising Data with FFT [Python] [https://youtu.be/s2K1JfNR7Sc](https://youtu.be/s2K1JfNR7Sc)
-2. Neto, João, Fourier Transform: A R Tutorial [http://www.di.fc.ul.pt/~jpn/r/fourier/fourier.html](http://www.di.fc.ul.pt/~jpn/r/fourier/fourier.html)
+2. Brunton, S. L. & Kutz, J. N. Data-Driven Science and Engineering: Machine Learning, Dynamical Systems, and Control. (Cambridge University Press, 2022). doi:10.1017/9781009089517. Pg 68.
+3. Neto, João, Fourier Transform: A R Tutorial [http://www.di.fc.ul.pt/~jpn/r/fourier/fourier.html](http://www.di.fc.ul.pt/~jpn/r/fourier/fourier.html)
