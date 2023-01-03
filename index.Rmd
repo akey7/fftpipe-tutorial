@@ -109,6 +109,14 @@ By using `length_norm()` before and after the FFT, the amplitudes of our wavefor
 
 ## In Depth
 
+### Where is the source code?
+
+The source code is at:
+
+[https://github.com/akey7/fftpipe/tree/main/R](https://github.com/akey7/fftpipe/tree/main/R)
+
+### What can you do with `fftpipe`?
+
 In this section, I will go over the capabilities of the `fftpipe` package in more detail. This section will cover:
 
 1. `fftpipe` is built around dataframes.
@@ -116,8 +124,6 @@ In this section, I will go over the capabilities of the `fftpipe` package in mor
 3. How do you compose a waveform with `waveform()`, `cos_sum()`, `exp_decay()`, `white_noise()`, and `length_norm()`?
 4. How do you do FFT operations with `compute_fft()` and `inverse_fft()`. What options are available for `fft_plot()`?
 5. How do you do signal denoising with `denoise_fft()`?
-
-[You can read the source code for all the functions on GitHub](https://github.com/akey7/fftpipe/tree/main/R)
 
 ### `fftpipe` Is Built Around Dataframes
 
